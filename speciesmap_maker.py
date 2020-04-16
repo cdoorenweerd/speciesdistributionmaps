@@ -34,21 +34,21 @@ def simplemap(species):
                  "\n Literature records (orange triangles) and UHIM collections (green circles: mscode sample, purple: bulk sample)", fontsize=3)
     
        # plot historical data
-       dfhistsp = dfhist[(dfhist['taxon'] == species)]
+       dfhistsp = dfhist.query('taxon == @species')
        col_y_hist = list(dfhistsp['latitude'])
        col_x_hist = list(dfhistsp['longitude'])
        m.plot(col_x_hist, col_y_hist, marker='^',color='#f1a340', markersize=3, zorder=27, latlon=True,
               linestyle='None', markeredgewidth=.2, markeredgecolor='black', alpha=.8)
     
        # plot surplus data
-       dfsurplussp = dfsurplus[(dfsurplus['taxon'] == species)]
+       dfsurplussp = dfsurplus.query('taxon == @species')
        col_y_surplus = list(dfsurplussp['latitude'])
        col_x_surplus = list(dfsurplussp['longitude'])
        m.plot(col_x_surplus, col_y_surplus, marker='.',color='#998ec3', markersize=7, zorder=28, latlon=True,
            linestyle='None', markeredgewidth=.2, markeredgecolor='black', alpha=.8)
 
        # plot ms sample data
-       dfmscodessp = dfmscodes[(dfmscodes['final_id'] == species)]
+       dfmscodessp = dfmscodes.query('final_id == @species')
        col_y_mscodes = list(dfmscodessp['latitude'])
        col_x_mscodes = list(dfmscodessp['longitude'])
        m.plot(col_x_mscodes, col_y_mscodes, marker='.',color='#2ca25f', markersize=7, zorder=29, latlon=True,
