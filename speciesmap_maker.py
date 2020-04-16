@@ -64,20 +64,21 @@ def simplemap(species):
 # Pull data from local postgresql
 connectstring = linecache.getline(filename='.connectstring', lineno=1)
 conn = psycopg2.connect(connectstring)
-sqlsurplus = "SELECT * FROM surplusview;"
+sqlsurplus = "SELECT * FROM surplusview WHERE latitude IS NOT NULL;"
 dfsurplus = pd.read_sql_query(sqlsurplus, conn)
 sqlhist = "SELECT * FROM histrecords;"
 dfhist = pd.read_sql_query(sqlhist, conn)
-sqlmscodes = "SELECT * FROM ms_samplesview;"
+sqlmscodes = "SELECT * FROM ms_samplesview WHERE latitude IS NOT NULL;"
 dfmscodes = pd.read_sql_query(sqlmscodes, conn)
 conn = None
 
-specieslist = dfsurplus['taxon'].unique().tolist()
+specieslist = dfmscodes['final_id'].unique().tolist()
 Path("./output_maps").mkdir(parents=True, exist_ok=True)
 
 for species in specieslist:
        try:
               simplemap(species)
-       except:
-              print("Cannot make map for " + species)
+       except Exception as e:
+              print("Cannot make map for " + species + ". Exception error:")
+              print(e)
               pass
