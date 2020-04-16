@@ -75,6 +75,7 @@ conn = None
 specieslist = dfmscodes['final_id'].unique().tolist()
 Path("./output_maps").mkdir(parents=True, exist_ok=True)
 
+print("Making maps for " + len(specieslist) + "species")
 for species in specieslist:
        try:
               simplemap(species)
