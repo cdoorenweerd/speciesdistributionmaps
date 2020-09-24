@@ -21,13 +21,16 @@ def simplemap(species):
        ax = fig.add_subplot(111, facecolor='white', frame_on=False, projection=asiacentric)
        # get bounding box coords here: http://boundingbox.klokantech.com, select 'dublincore'
        ax.set_extent([-120, 125, -40, 45], crs=asiacentric) # minx, maxx, miny, maxy. if not set, map extent will be adjusted to match plotted data
-       ax.coastlines(resolution='50m', linewidth=0.2) # 50m or 110m, taken from naturalearthdata.com
-       ax.add_feature(cartopy.feature.OCEAN)
-       ax.add_feature(cartopy.feature.LAND, edgecolor='grey', linewidth=.2)
+       ax.add_feature(cartopy.feature.OCEAN, facecolor='#C9E4F2')
+       LAND_50m = cfeature.NaturalEarthFeature(category='physical', name='land', scale='50m',
+                                               edgecolor='black', facecolor='#FEFEE9', linewidth=0.2)
+       ax.add_feature(LAND_50m)
        ax.add_feature(cartopy.feature.LAKES)
        #ax.add_feature(cartopy.feature.RIVERS)
-       ax.add_feature(cartopy.feature.BORDERS, edgecolor='grey', linewidth=0.2) # countries
-       plt.title("University of Hawaii Insect Museum (c) " + time.strftime("%Y") + "\n" +
+       BORDERS_50m = cfeature.NaturalEarthFeature(category='cultural', name='admin_0_boundary_lines_land', scale='50m',
+                                                  facecolor='none', edgecolor='grey', linewidth=.1)
+       ax.add_feature(BORDERS_50m)
+              plt.title("University of Hawaii Insect Museum (c) " + time.strftime("%Y") + "\n" +
                   species + 
                  "\n Literature records (orange triangles) and UHIM collections (green circles: mscode sample, purple: bulk sample)", fontsize=3)
     
@@ -84,3 +87,23 @@ for species in specieslist:
               print("Cannot make map for " + species + ". Exception error:")
               print(e)
               pass
+
+
+# standard cartopy colors:
+# land: #EFEFDB
+# water: #97B6E1
+
+# wikipedia colors:
+# land: #FEFEE9
+# water: #C6ECFF
+
+# Camiel colors:
+# land: #FEFEE9
+# water: #C9E4F2
+
+# stock image background
+#ax.stock_img()
+
+#admin_0_boundary_lines_land #countries
+#admin_1_states_provinces_lines #provinces
+#rivers_50m = cfeature.NaturalEarthFeature('physical', 'rivers_lake_centerlines', '50m')
