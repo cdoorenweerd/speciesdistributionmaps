@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import psycopg2
 import time
+import sys
 import linecache
 from pathlib import Path
 
@@ -30,7 +31,7 @@ def simplemap(species):
        BORDERS_50m = cfeature.NaturalEarthFeature(category='cultural', name='admin_0_boundary_lines_land', scale='50m',
                                                   facecolor='none', edgecolor='grey', linewidth=.1)
        ax.add_feature(BORDERS_50m)
-              plt.title("University of Hawaii Insect Museum (c) " + time.strftime("%Y") + "\n" +
+       plt.title("University of Hawaii Insect Museum (c) " + time.strftime("%Y") + "\n" +
                   species + 
                  "\n Literature records (orange triangles) and UHIM collections (green circles: mscode sample, purple: bulk sample)", fontsize=3)
     
@@ -68,6 +69,10 @@ def simplemap(species):
 
 connectstring = linecache.getline(filename='.connectstring', lineno=1)
 conn = psycopg2.connect(connectstring)
+if conn.closed == 0:
+       print("Successfully connected to psql database")
+else:
+       sys.exit("Could not connect to psql database")    
 sqlsurplus = "SELECT * FROM surplusview WHERE latitude IS NOT NULL;"
 dfsurplus = pd.read_sql_query(sqlsurplus, conn)
 sqlhist = "SELECT * FROM histrecords;"
