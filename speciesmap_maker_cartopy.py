@@ -11,6 +11,7 @@ import numpy as np
 import psycopg2
 import time
 import sys
+import os.path
 import linecache
 from pathlib import Path
 
@@ -67,12 +68,14 @@ def simplemap(species):
        plt.close('all')
 
 
+if os.path.exists('./.connectstring') == False:
+       sys.exit("Missing .connectstring file: stopping")
 connectstring = linecache.getline(filename='.connectstring', lineno=1)
 conn = psycopg2.connect(connectstring)
 if conn.closed == 0:
        print("Successfully connected to psql database")
 else:
-       sys.exit("Could not connect to psql database")    
+       sys.exit("Could not connect to psql database: stopping")    
 sqlsurplus = "SELECT * FROM surplusview WHERE latitude IS NOT NULL;"
 dfsurplus = pd.read_sql_query(sqlsurplus, conn)
 sqlhist = "SELECT * FROM histrecords;"
