@@ -5,6 +5,7 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 import cartopy
 import pandas as pd
 import numpy as np
@@ -21,6 +22,7 @@ def simplemap(species):
        asiacentric = ccrs.PlateCarree(central_longitude=100) # change center of the map to ~ Thailand centric
        fig = plt.figure(figsize=(5, 5), dpi= 300, edgecolor='white')
        ax = fig.add_subplot(111, facecolor='white', frame_on=False, projection=asiacentric)
+       #ax.outline_patch.set_visible(False)
        # get bounding box coords here: http://boundingbox.klokantech.com, select 'dublincore'
        ax.set_extent([-120, 125, -40, 45], crs=asiacentric) # minx, maxx, miny, maxy. if not set, map extent will be adjusted to match plotted data
        ax.add_feature(cartopy.feature.OCEAN, facecolor='#C9E4F2')
